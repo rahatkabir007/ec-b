@@ -321,7 +321,7 @@ export class OrdersService {
   }
 
   async SSLCommerz_payment_fail(transaction_id: string) {
-    const result = await this.orderModel.findOneAndRemove({ transaction_id });
+    const result = await this.orderModel.findOneAndDelete({ transaction_id });
     return {
       data: result,
       message: "Payment failed, Try Again",
@@ -329,7 +329,7 @@ export class OrdersService {
   }
 
   async SSLCommerz_payment_cancel(transaction_id: string) {
-    const result = await this.orderModel.findOneAndRemove({ transaction_id });
+    const result = await this.orderModel.findOneAndDelete({ transaction_id });
     return {
       data: result,
       message: "Payment failed, Try Again",

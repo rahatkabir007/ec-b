@@ -40,6 +40,6 @@ export class WithdrawMethodsService {
   }
 
   async remove(slug: string) {
-    return await this.withdrawMethodModel.findOneAndRemove({ slug });
+    return await this.withdrawMethodModel.findOneAndDelete({ slug });
   }
 }
