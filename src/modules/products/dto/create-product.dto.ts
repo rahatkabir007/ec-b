@@ -6,6 +6,7 @@ import {
   IsString,
   isBoolean,
 } from "class-validator";
+import { IsEither } from "src/utils/is-either.validator";
 
 export class CreateProductDto {
   // id: string;
@@ -32,8 +33,8 @@ export class CreateProductDto {
   @IsString()
   status: string;
 
-  @IsArray()
-  imageURL: Array<string>;
+  // @IsEither()
+  imageURL: string | Array<string>;
 
   @IsOptional()
   offerPrice: number;

@@ -20,6 +20,7 @@ export class ProductsService {
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Object> {
+    console.log(createProductDto?.imageURL)
     createProductDto["slug"] = UtilSlug.getUniqueId(
       createProductDto.productName
     );

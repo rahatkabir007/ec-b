@@ -32,6 +32,7 @@ import { FlashSaleModule } from "./modules/flash_sale/flash_sale.module";
 import { SeoModule } from "./modules/seo/seo.module";
 import { BlogCategoryModule } from "./modules/blog-category/blog-category.module";
 import { SubscriberModule } from "./modules/subscriber/subscriber.module";
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { SubscriberModule } from "./modules/subscriber/subscriber.module";
     BlogCommentsModule,
     BlogCategoryModule,
     SubscriberModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],
