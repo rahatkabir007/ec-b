@@ -8,21 +8,33 @@ import {
   Delete,
   Query,
   Request,
+  UseInterceptors,
+  UploadedFile,
 } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { QueryDto } from "./dto/query.dto";
 import { SearchSortDto } from "src/utils/all-queries.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { diskStorage } from 'multer';
+import { ProductDto } from "./dto/product-dto";
 
 @Controller("products")
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  create( @Body() createProductDto: CreateProductDto) {
-  
-    return this.productsService.create(createProductDto);
+  @UseInterceptors(FileInterceptor('image', {
+    storage: diskStorage({
+      destination: './uploads',
+      filename: (req, file, cb) => {
+        cb(null, `${file.originalname}`);
+      },
+    }),
+  }))
+  async create(@UploadedFile() file, @Body() productDto: ProductDto) {
+    return this.productsService.create(file,productDto);
   }
 
   @Get()

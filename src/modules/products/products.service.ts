@@ -9,6 +9,8 @@ import { Model } from "mongoose";
 import { UtilSlug } from "./../../utils/UtilSlug";
 import { SearchSortDto } from "src/utils/all-queries.dto";
 import { User, UserDocument } from "src/schemas/user.schema";
+import { UploadService } from "../upload/upload.service";
+import { ProductDto } from "./dto/product-dto";
 
 @Injectable()
 export class ProductsService {
@@ -16,14 +18,24 @@ export class ProductsService {
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>,
     @InjectModel(User.name)
-    private readonly userModel: Model<UserDocument>
+    private readonly userModel: Model<UserDocument>,
+    private readonly uploadService: UploadService,
   ) {}
 
-  async create(createProductDto: CreateProductDto): Promise<Object> {
-    console.log(createProductDto?.imageURL)
-    createProductDto["slug"] = UtilSlug.getUniqueId(
-      createProductDto.productName
-    );
+  async create(file, productDto: ProductDto): Promise<Object> {
+    const createProductDto = new CreateProductDto();
+    if (file) {
+      const response = this.uploadService.handleFileUpload([file]);
+      // console.log(response)
+      createProductDto.imageURL = response[0].url;
+    }
+    const productData = JSON.parse(productDto?.data);
+    // console.log(productData)
+
+    // Copy properties from productData to createProductDto
+    Object.assign(createProductDto, productData);
+
+    createProductDto["slug"] = UtilSlug.getUniqueId(productData.productName);
 
     const result = await new this.productModel(createProductDto).save();
     if (result) {
