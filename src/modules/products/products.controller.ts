@@ -24,19 +24,25 @@ import { ProductDto } from "./dto/product-dto";
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  @Post()
-  @UseInterceptors(FileInterceptor('image', {
-    storage: diskStorage({
-      destination: './uploads',
-      filename: (req, file, cb) => {
-        cb(null, `${file.originalname}`);
-      },
-    }),
-  }))
-  async create(@UploadedFile() file, @Body() productDto: ProductDto) {
-    return this.productsService.create(file,productDto);
-  }
+  // @Post()
+  // @UseInterceptors(FileInterceptor('image', {
+  //   storage: diskStorage({
+  //     destination: './uploads',
+  //     filename: (req, file, cb) => {
+  //       cb(null, `${file.originalname}`);
+  //     },
+  //   }),
+  // }))
+  // async create(@UploadedFile() file, @Body() productDto: ProductDto) {
+  //   return this.productsService.create(file,productDto);
+  // }
 
+
+  @Post()
+  async create(@Body() createProductDto: CreateProductDto) {
+    return this.productsService.create(createProductDto);
+  }
+  
   @Get()
   async findAll(@Query() queries: QueryDto, @Request() req: Request) {
     return await this.productsService.findAll(queries);

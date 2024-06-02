@@ -22,21 +22,38 @@ export class ProductsService {
     private readonly uploadService: UploadService,
   ) {}
 
-  async create(file, productDto: ProductDto): Promise<Object> {
-    const createProductDto = new CreateProductDto();
-    if (file) {
-      const response = this.uploadService.handleFileUpload([file]);
-      // console.log(response)
-      createProductDto.imageURL = response[0].url;
-    }
-    const productData = JSON.parse(productDto?.data);
-    // console.log(productData)
+  // async create(file, productDto: ProductDto): Promise<Object> {
+  //   const createProductDto = new CreateProductDto();
+  //   if (file) {
+  //     const response = this.uploadService.handleFileUpload([file]);
+  //     // console.log(response)
+  //     createProductDto.imageURL = response[0].url;
+  //   }
+  //   const productData = JSON.parse(productDto?.data);
+  //   // console.log(productData)
 
-    // Copy properties from productData to createProductDto
-    Object.assign(createProductDto, productData);
+  //   // Copy properties from productData to createProductDto
+  //   Object.assign(createProductDto, productData);
 
-    createProductDto["slug"] = UtilSlug.getUniqueId(productData.productName);
+  //   createProductDto["slug"] = UtilSlug.getUniqueId(productData.productName);
 
+  //   const result = await new this.productModel(createProductDto).save();
+  //   if (result) {
+  //     return {
+  //       data: result,
+  //       message: "success",
+  //     };
+  //   } else {
+  //     return {
+  //       message: "error",
+  //     };
+  //   }
+  // }
+
+  async create(createProductDto: CreateProductDto): Promise<Object> {
+    createProductDto["slug"] = UtilSlug.getUniqueId(createProductDto.productName.split(" ").join("_"));
+
+    // console.log(createProductDto);
     const result = await new this.productModel(createProductDto).save();
     if (result) {
       return {
