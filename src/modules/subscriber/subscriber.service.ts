@@ -20,10 +20,29 @@ export class SubscriberService {
     return await new this.subscriberModel(createSubscriberDto).save();
   }
 
-  findAll() {
-    return `This action returns all subscriber`;
+  // ------------- get all subs -------
+  async findAll(query: any) {
+    const allSubscriber = await this.subscriberModel
+      .find({ email: new RegExp(query.search, "i") })
+      .sort({ [query.sortBy]: query.sortType });
+    return allSubscriber;
+  }
+  async findAllForCoupon() {
+    return await this.subscriberModel.find({});
   }
 
+  // ------------
+  // async sendEmail(emailData: any) {
+  //   const data = {
+  //     from: "iamiqbalcse27@gmail.com",
+  //     to: ["kawarib422@glumark.com", "iamhasan9501@gmail.com"],
+  //     subject: emailData.subject,
+  //     text: emailData.message,
+  //   };
+  //   return await this.mailgunService.sendEmail(data);
+  // }
+
+  // -----------
   findOne(id: number) {
     return `This action returns a #${id} subscriber`;
   }
@@ -32,7 +51,7 @@ export class SubscriberService {
     return `This action updates a #${id} subscriber`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} subscriber`;
+  async delete(slug: string): Promise<Subscriber> {
+    return await this.subscriberModel.findOneAndDelete({ slug });
   }
 }

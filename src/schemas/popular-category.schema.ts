@@ -8,8 +8,8 @@ export class PopularCategory {
   @Prop({ default: "category_slug_1", required: true })
   slug: string;
 
-  @Prop({ required: true })
-  cat_name: string;
+  // @Prop({ required: true })
+  // cat_name: string;
 
   @Prop()
   cat_image: string;

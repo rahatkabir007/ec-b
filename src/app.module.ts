@@ -32,13 +32,39 @@ import { FlashSaleModule } from "./modules/flash_sale/flash_sale.module";
 import { SeoModule } from "./modules/seo/seo.module";
 import { BlogCategoryModule } from "./modules/blog-category/blog-category.module";
 import { SubscriberModule } from "./modules/subscriber/subscriber.module";
-import { UploadModule } from "./modules/upload/upload.module";
-
+import { MailgunService } from "./modules/mailgun/mailgun.service";
+import { CategoriesService } from "./modules/categories/categories.service";
+import { BrandsService } from "./modules/brands/brands.service";
+import { SubCategoriesService } from "./modules/sub-categories/sub-categories.service";
+import { Category, CategorySchema } from "./schemas/category.schema";
+import { User, UserSchema } from "./schemas/user.schema";
+import { Brand, BrandSchema } from "./schemas/brand.schema";
+import { SubCategories, SubCategoriesSchema } from "./schemas/sub-category.schema";
+import { Cart, CartSchema } from "./schemas/cart.schema";
+import { Wishlist, WishlistSchema } from "./schemas/wishlist.schema";
+import { Slider, SliderSchema } from "./schemas/slider.schema";
+import { Advertisement, AdvertisementSchema } from "./schemas/advertisement.schema";
+import { PopularCategory, PopularCategorySchema } from "./schemas/popular-category.schema";
+import { FlashSale, FlashSaleSchema } from "./schemas/flash_sale.schema";
+import { FeaturedCategory, FeaturedCategorySchema } from "./schemas/featured-category.schema";
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.DATABASE_URL ?? ""),
+    MongooseModule.forFeature([
+      { name: Category.name, schema: CategorySchema },
+      { name: Brand.name, schema: BrandSchema },
+      { name: SubCategories.name, schema: SubCategoriesSchema },
+      { name: Cart.name, schema: CartSchema },
+      { name: Wishlist.name, schema: WishlistSchema },
+      { name: User.name, schema: UserSchema },
+      { name: Slider.name, schema: SliderSchema },
+      { name: Advertisement.name, schema: AdvertisementSchema },
+      { name: PopularCategory.name, schema: PopularCategorySchema },
+      { name: FlashSale.name, schema: FlashSaleSchema },
+      { name: FeaturedCategory.name, schema: FeaturedCategorySchema },
+    ]),
     UsersModule,
     ProductsModule,
     PopularCategoriesModule,
@@ -68,7 +94,6 @@ import { UploadModule } from "./modules/upload/upload.module";
     BlogCommentsModule,
     BlogCategoryModule,
     SubscriberModule,
-    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

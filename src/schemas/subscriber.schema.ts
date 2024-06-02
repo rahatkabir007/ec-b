@@ -5,11 +5,14 @@ export type SubscriberDocument = Subscriber & Document;
 
 @Schema({ timestamps: true })
 export class Subscriber {
-  @Prop()
+  @Prop({ required: true, unique: true })
   slug: string;
 
   @Prop()
   email: string;
+
+  @Prop()
+  verified?: boolean;
 
   @Prop()
   user_slug: string;

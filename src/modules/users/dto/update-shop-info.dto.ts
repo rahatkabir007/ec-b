@@ -33,8 +33,10 @@ export class UpdateShopInfoDto extends UpdateUserDto {
     opens_at?: string;
     close_at?: string;
     geetings_message?: string;
-    social_icon?: string;
-    social_link?: string;
+    // social_icon?: string;
+    // social_link?: string;
+    social?: Array<object>;
+
     seo_title?: string;
     seo_des?: string;
   };

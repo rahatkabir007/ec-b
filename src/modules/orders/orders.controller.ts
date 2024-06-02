@@ -30,6 +30,8 @@ export class OrdersController {
       return this.ordersService.createSSL(createOrderDto);
     } else if (createOrderDto.payment_method === "cod") {
       return this.ordersService.createCOD(createOrderDto);
+    } else if (createOrderDto.payment_method === "bKash") {
+      return this.ordersService.createBkashOrder(createOrderDto);
     }
   }
 
@@ -68,7 +70,7 @@ export class OrdersController {
   }
 
   @Get("/admin")
-  async findAllAdminProduct(
+  async findAllOrdersAdmin(
     @Query() query: SearchSortDto
     // @Request() req: Request
   ) {
@@ -82,6 +84,13 @@ export class OrdersController {
     @Query() query: SearchSortDto
   ) {
     return await this.ordersService.findAllOrderForSeller(slug, query);
+  }
+
+  @Get("seller_order")
+  async findSingleOrderOfSeller(
+    @Query() query: { seller_slug: string; order_slug: string }
+  ) {
+    return await this.ordersService.findSingleOrderOfSeller(query);
   }
 
   @Get(":slug")

@@ -48,6 +48,12 @@ export class CouponService {
     return couponFind;
   }
 
+  // coupon apply------
+  async findOneCoupon(query: { code: string }) {
+    console.log(query);
+    return await this.couponModel.findOne({ code: query.code });
+  }
+  // ---------------
   async update(slug: string, updateCouponDto: UpdateCouponDto) {
     return await this.couponModel.findOneAndUpdate({ slug }, updateCouponDto, {
       new: true,

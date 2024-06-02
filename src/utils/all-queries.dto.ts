@@ -21,11 +21,11 @@ export class SearchSortDto {
   @IsOptional()
   order_status: string;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
   limit: number;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
   page: number;
 }

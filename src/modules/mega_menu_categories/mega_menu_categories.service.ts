@@ -26,8 +26,43 @@ export class MegaMenuCategoriesService {
     return await this.megaCategoriesModel.create(createMegaMenuCategoryDto);
   }
 
-  async findAlltwo(): Promise<MegaCategories[]> {
-    return await this.megaCategoriesModel.find({ status: "active" }).limit(3);
+  async findAllForHeader(): Promise<MegaCategories[]> {
+    return await this.megaCategoriesModel.aggregate([
+      {
+        $match: {
+          status: "active",
+        },
+      },
+      {
+        $limit: 3,
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "cat_slug",
+          foreignField: "cat_slug",
+          as: "categoriesData",
+        },
+      },
+      {
+        $unwind: "$categoriesData",
+      },
+      {
+        $lookup: {
+          from: "subcategories",
+          localField: "sub_cat_list.value",
+          foreignField: "slug",
+          as: "sub_cat_list",
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          categoriesData: 1,
+          sub_cat_list: 1,
+        },
+      },
+    ]);
   }
 
   async findAll(query: any): Promise<MegaCategories[]> {

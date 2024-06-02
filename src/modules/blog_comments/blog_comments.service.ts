@@ -9,7 +9,6 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { UtilSlug } from "src/utils/UtilSlug";
 
-
 @Injectable()
 export class BlogCommentsService {
   constructor(
@@ -26,7 +25,7 @@ export class BlogCommentsService {
 
   async findBlogComments(slug: string) {
     return await this.blogCommentModel
-      .find({ blogSlug: slug })
+      .find({ blogSlug: slug, status: "active" })
       .sort({ createdAt: -1 });
   }
 
@@ -41,11 +40,34 @@ export class BlogCommentsService {
     return `This action returns a #${id} blogComment`;
   }
 
-  update(id: number, updateBlogCommentDto: UpdateBlogCommentDto) {
-    return `This action updates a #${id} blogComment`;
+  // update(id: number, updateBlogCommentDto: UpdateBlogCommentDto) {
+  //   return `This action updates a #${id} blogComment`;
+  // }
+
+  //-------status update ---------------
+  async updateStatus(
+    slug: string,
+    updateBlogCommentDto: UpdateBlogCommentDto
+  ): Promise<any> {
+    console.log(updateBlogCommentDto);
+    const updatedStatus = await this.blogCommentModel.findOneAndUpdate(
+      { slug: slug },
+      updateBlogCommentDto,
+      {
+        new: true,
+      }
+    );
+    console.log(updatedStatus);
+    return updatedStatus;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} blogComment`;
+  // remove(id: number) {
+  //   return `This action removes a #${id} blogComment`;
+  // }
+
+  //------------------------
+
+  async delete(slug: string): Promise<BlogComment> {
+    return await this.blogCommentModel.findOneAndDelete({ slug });
   }
 }

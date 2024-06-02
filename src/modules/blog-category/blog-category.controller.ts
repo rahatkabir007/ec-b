@@ -24,18 +24,37 @@ export class BlogCategoryController {
   findAll() {
     return this.blogCategoryService.findAll();
   }
-
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.blogCategoryService.findOne(+id);
+  @Get("/for-blog")
+  findAllForBlog() {
+    return this.blogCategoryService.findAllForBlog();
   }
 
-  @Patch(":id")
+  // @Get(":id")
+  // findOne(@Param("id") id: string) {
+  //   return this.blogCategoryService.findOne(+id);
+  // }
+
+  @Get(":slug")
+  findOne(@Param("slug") slug: string) {
+    console.log(slug);
+    return this.blogCategoryService.findOne(slug);
+  }
+
+  @Patch(":slug")
   update(
-    @Param("id") id: string,
+    @Param("slug") slug: string,
     @Body() updateBlogCategoryDto: UpdateBlogCategoryDto
   ) {
-    return this.blogCategoryService.update(+id, updateBlogCategoryDto);
+    return this.blogCategoryService.update(slug, updateBlogCategoryDto);
+  }
+  
+  // status active/inactive
+  @Patch("/edit-status/:slug")
+  updateStatus(
+    @Param("slug") slug: string,
+    @Body() updateBlogCategoryDto: UpdateBlogCategoryDto
+  ) {
+    return this.blogCategoryService.update(slug, updateBlogCategoryDto);
   }
 
   @Delete(":slug")

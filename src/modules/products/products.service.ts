@@ -9,8 +9,6 @@ import { Model } from "mongoose";
 import { UtilSlug } from "./../../utils/UtilSlug";
 import { SearchSortDto } from "src/utils/all-queries.dto";
 import { User, UserDocument } from "src/schemas/user.schema";
-import { UploadService } from "../upload/upload.service";
-import { ProductDto } from "./dto/product-dto";
 
 @Injectable()
 export class ProductsService {
@@ -18,42 +16,14 @@ export class ProductsService {
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>,
     @InjectModel(User.name)
-    private readonly userModel: Model<UserDocument>,
-    private readonly uploadService: UploadService,
+    private readonly userModel: Model<UserDocument>
   ) {}
 
-  // async create(file, productDto: ProductDto): Promise<Object> {
-  //   const createProductDto = new CreateProductDto();
-  //   if (file) {
-  //     const response = this.uploadService.handleFileUpload([file]);
-  //     // console.log(response)
-  //     createProductDto.imageURL = response[0].url;
-  //   }
-  //   const productData = JSON.parse(productDto?.data);
-  //   // console.log(productData)
-
-  //   // Copy properties from productData to createProductDto
-  //   Object.assign(createProductDto, productData);
-
-  //   createProductDto["slug"] = UtilSlug.getUniqueId(productData.productName);
-
-  //   const result = await new this.productModel(createProductDto).save();
-  //   if (result) {
-  //     return {
-  //       data: result,
-  //       message: "success",
-  //     };
-  //   } else {
-  //     return {
-  //       message: "error",
-  //     };
-  //   }
-  // }
-
   async create(createProductDto: CreateProductDto): Promise<Object> {
-    createProductDto["slug"] = UtilSlug.getUniqueId(createProductDto.productName.split(" ").join("_"));
+    createProductDto["slug"] = UtilSlug.getUniqueId(
+      createProductDto.productName
+    );
 
-    // console.log(createProductDto);
     const result = await new this.productModel(createProductDto).save();
     if (result) {
       return {
@@ -75,7 +45,7 @@ export class ProductsService {
     highlight: string;
     max: string;
     min: string;
-  }): Promise<Product[]> {
+  }): Promise<{ filteredProducts: Product[]; count: number }> {
     const search = query.search;
     const categoriesStrArr = query.categories
       ? query.categories.split(" ").slice(1)
@@ -130,12 +100,48 @@ export class ProductsService {
         : {}
     );
 
-    console.log(
-      categoryFilter,
-      subCategoryFilter,
-      brandFilter,
-      highlightFilter
-    );
+    // console.log(
+    //   categoryFilter,
+    //   subCategoryFilter,
+    //   brandFilter,
+    //   highlightFilter
+    // );
+
+    const productCount = await this.productModel.aggregate([
+      {
+        $match: {
+          $and: [
+            {
+              productName: { $regex: "(?i)" + search + "(?-i)" },
+            },
+            {
+              status: "active",
+            },
+            categoryFilter,
+            brandFilter,
+            highlightFilter,
+            subCategoryFilter,
+            {
+              $or: [
+                {
+                  price: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+                {
+                  offerPrice: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+      { $count: "totalProducts" },
+    ]);
 
     const filteredProducts = await this.productModel.aggregate([
       {
@@ -172,7 +178,14 @@ export class ProductsService {
       },
     ]);
 
-    return filteredProducts;
+    const result = {
+      filteredProducts: filteredProducts,
+      count: productCount.length !== 0 ? productCount[0].totalProducts : 0,
+    };
+
+    // console.log(result);
+
+    return result;
   }
 
   async findFilteredProductsBySeller(
@@ -186,7 +199,7 @@ export class ProductsService {
       max: string;
       min: string;
     }
-  ): Promise<{ sellerData: User; filteredProducts: Product[] }> {
+  ): Promise<{ sellerData: User; filteredProducts: Product[]; count: number }> {
     const search = query.search;
     const categoriesStrArr = query.categories
       ? query.categories.split(" ").slice(1)
@@ -199,7 +212,7 @@ export class ProductsService {
 
     const seller = await this.userModel.findOne({ "shop.shop_name": shopName });
     if (!seller) {
-      return { sellerData: null, filteredProducts: [] };
+      return { sellerData: null, filteredProducts: [], count: 0 };
     }
 
     const sellerSlug = seller.slug;
@@ -255,6 +268,45 @@ export class ProductsService {
       highlightFilter
     );
 
+    const productCount = await this.productModel.aggregate([
+      {
+        $match: {
+          $and: [
+            {
+              seller_slug: sellerSlug,
+            },
+            {
+              productName: { $regex: "(?i)" + search + "(?-i)" },
+            },
+            {
+              status: "active",
+            },
+            categoryFilter,
+            brandFilter,
+            highlightFilter,
+            subCategoryFilter,
+            {
+              $or: [
+                {
+                  price: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+                {
+                  offerPrice: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+      { $count: "totalProducts" },
+    ]);
+
     const filteredProducts = await this.productModel.aggregate([
       {
         $match: {
@@ -293,7 +345,11 @@ export class ProductsService {
       },
     ]);
 
-    return { sellerData: seller, filteredProducts: filteredProducts };
+    return {
+      sellerData: seller,
+      filteredProducts: filteredProducts,
+      count: productCount.length !== 0 ? productCount[0].totalProducts : 0,
+    };
   }
 
   //   async findAll(): Promise<ProductDocument[]> {
@@ -306,9 +362,10 @@ export class ProductsService {
   async findAll(
     query: any // : Promise<ProductDocument[]>
   ) {
-    const allProductData = await this.productModel.find();
+    const allProductData = await this.productModel.find({ status: "active" });
     // let limit: number = parseInt(query.limit) || 3
     // const page: number = parseInt(query.page) || 1
+
     const featuredProducts = await this.productModel
       .find({ isFeatured: true, status: "active" }, { _id: 0 })
       // .limit(limit)
@@ -559,6 +616,20 @@ export class ProductsService {
   //   type: "stockIn",
   // })
   // .sort({ [query.sortBy]: query.sortType });
+
+  // async findOne(slug: string) {
+  //   const subCategoryFind = await this.subCategoryModel.findOne({ slug: slug });
+
+  //   return subCategoryFind;
+  // }
+
+  async getRelatedProducts(catSlug: string) {
+    const relatedProductsFind = await this.productModel.find({
+      catSlug,
+    });
+
+    return relatedProductsFind;
+  }
 
   async getSingleProductsInventory(slug: string, query: any) {
     console.log(query);

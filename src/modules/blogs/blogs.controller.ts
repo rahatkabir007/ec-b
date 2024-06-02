@@ -25,6 +25,10 @@ export class BlogsController {
   findAll() {
     return this.blogsService.findAll();
   }
+  @Get("/for-admin")
+  findAllForAdmin() {
+    return this.blogsService.findAllForAdmin();
+  }
 
   @Get("/category")
   findFilteredBlogs(

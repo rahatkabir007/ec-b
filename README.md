@@ -29,7 +29,7 @@
 ## Installation
 
 ```bash
-$ npm install
+$ npm install dgdfggdf
 ```
 
 ## Running the app

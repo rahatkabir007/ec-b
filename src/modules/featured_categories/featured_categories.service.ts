@@ -1,4 +1,3 @@
-import { query } from "express";
 import { Injectable } from "@nestjs/common";
 import { CreateFeaturedCategoryDto } from "./dto/create-featured_category.dto";
 import { UpdateFeaturedCategoryDto } from "./dto/update-featured_category.dto";

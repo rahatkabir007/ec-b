@@ -24,10 +24,18 @@ export class Address {
   country: string;
 
   @Prop()
-  state: string;
+  division: string;
+
+  // @Prop()
+  // state: string;
+  @Prop()
+  district: string;
+
+  // @Prop()
+  // city: string;
 
   @Prop()
-  city: string;
+  thana: string;
 
   @Prop()
   address: string;

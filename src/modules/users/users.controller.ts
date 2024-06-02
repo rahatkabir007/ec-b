@@ -21,16 +21,25 @@ import { UpdateShopInfoDto } from "./dto/update-shop-info.dto";
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post("/sign_up")
+  // @Post("/sign_up")
+  // async register(@Body() registerUserDto: RegisterUserDto) {
+  //   console.log("hello", registerUserDto);
+  //   return await this.usersService.register(registerUserDto);
+  // }
+
+  @Post("/add_admin")
   async register(@Body() registerUserDto: RegisterUserDto) {
-    console.log("hello", registerUserDto);
     return await this.usersService.register(registerUserDto);
   }
 
   @Post("/login")
-  async Login(@Body() loginUserDto: LoginUserDto) {
-    console.log("hello1234", loginUserDto);
+  async login(@Body() loginUserDto: LoginUserDto) {
     return await this.usersService.login(loginUserDto);
+  }
+
+  @Post("seller/login")
+  async adminSellerLogin(@Body() loginUserDto: LoginUserDto) {
+    return await this.usersService.adminSellerLogin(loginUserDto);
   }
 
   @Post("/seller_apply")
@@ -50,11 +59,16 @@ export class UsersController {
     );
   }
 
+  @Get("/admins")
+  findAllAdmins(@Query() queries: SearchSortDto) {
+    return this.usersService.findAllAdmins(queries);
+  }
+
   @Get("/customers")
   findAllCustomers(@Query() queries: SearchSortDto) {
     return this.usersService.findAllCustomers(queries);
   }
-  
+
   @Get("/sellers")
   findAllSellers(@Query() queries: SearchSortDto) {
     return this.usersService.findAllSellers(queries);
@@ -65,6 +79,11 @@ export class UsersController {
     return this.usersService.findOne(email);
   }
 
+  @Get("/seller/:email")
+  findSellerByUser(@Param("email") email: string) {
+    return this.usersService.findSellerByUser(email);
+  }
+
   @Get(":slug")
   findUser(@Param("slug") slug: string) {
     return this.usersService.findSingleUser(slug);
@@ -73,6 +92,14 @@ export class UsersController {
   @Patch("/edit-status/:slug")
   update(@Param("slug") slug: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(slug, updateUserDto);
+  }
+
+  @Patch("/edit-seller-status/:slug")
+  updateSellerStatus(
+    @Param("slug") slug: string,
+    @Body() updateUserDto: UpdateUserDto
+  ) {
+    return this.usersService.updateSellerStatus(slug, updateUserDto);
   }
 
   @Patch("/shop/:email")
@@ -109,5 +136,10 @@ export class UsersController {
   @Delete(":slug")
   delete(@Param("slug") slug: string) {
     return this.usersService.delete(slug);
+  }
+
+  @Delete("/deleteAdmin/:slug")
+  deleteAdmin(@Param("slug") slug: string, @Query() query: { email: string }) {
+    return this.usersService.deleteAdmin(slug, query.email);
   }
 }

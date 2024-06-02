@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from "class-validator";
+import { IsDate, IsOptional, IsString, isDate } from "class-validator";
 
 export class CreateFlashSaleDto {
   @IsOptional()
@@ -34,7 +34,7 @@ export class CreateFlashSaleDto {
   offer?: string;
 
   @IsOptional()
-  @IsString()
+  // @IsDate()
   time?: string;
 
   // @IsString()

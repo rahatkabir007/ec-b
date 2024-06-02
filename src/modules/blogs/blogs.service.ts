@@ -21,7 +21,7 @@ export class BlogsService {
   }
 
   async findAll(): Promise<object> {
-    const allBlogs = await this.blogModel.find({}).exec();
+    const allBlogs = await this.blogModel.find({ status: "active" }).exec();
     // var todayDate = new Date();
     // todayDate.setHours(0, 0, 0, 0);
     // todayDate.toISOString();
@@ -36,7 +36,14 @@ export class BlogsService {
         },
       },
     ]);
+
     return { allBlogs, latestBlogs };
+  }
+
+  //get all blog for admin -active or inactive
+  async findAllForAdmin(): Promise<any> {
+    const blogs = await this.blogModel.find({});
+    return blogs;
   }
 
   async findOne(slug: string) {

@@ -100,7 +100,8 @@ export class FlashSaleService {
     return await this.flashSaleModel.findOneAndUpdate(
       { name: updateFlashSaleDto.name },
       updateFlashSaleDto,
-      { upsert: true, new: true }
+      { new: true }
+      // , upsert: true
     );
   }
 

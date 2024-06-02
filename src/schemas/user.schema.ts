@@ -43,6 +43,7 @@ export class User {
       address: String;
     };
   };
+
   @Prop({
     type: {
       shop_name: String,
@@ -51,11 +52,11 @@ export class User {
       shop_cover: String,
       opens_at: String,
       close_at: String,
-      geetings_message: String,
-      social_icon: String,
-      social_link: String,
+      greetings_message: String,
+      social: Array,
       seo_title: String,
       seo_des: String,
+      rating: Number,
     },
   })
   shop: {
@@ -66,13 +67,14 @@ export class User {
       shop_cover: string;
       opens_at?: string;
       close_at?: string;
-      geetings_message?: string;
-      social_icon?: string;
-      social_link?: string;
+      greetings_message?: string;
+      social?: Array<object>;
       seo_title?: string;
       seo_des?: string;
+      rating?: number;
     };
   };
+
   @Prop()
   tokenType: string;
 

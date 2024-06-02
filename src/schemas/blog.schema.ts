@@ -15,6 +15,9 @@ export class Blog {
   title: string;
 
   @Prop()
+  category_slug: string;
+
+  @Prop()
   category: string;
 
   @Prop()

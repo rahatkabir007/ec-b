@@ -42,8 +42,7 @@ export class SliderService {
   async findAll(): Promise<Slider[]> {
     return await this.sliderModel
       .find({ status: "active" })
-      .sort({ serial: 1 })
-      .exec();
+      .sort({ serial: 1 });
   }
   // new RegExp(query.search, "d")
 

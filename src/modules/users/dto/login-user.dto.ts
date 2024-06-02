@@ -28,6 +28,7 @@ export class LoginUserDto {
 
   // @IsString({ message: 'should be string' })
   @IsOptional()
+  @IsString()
   role: string;
 
   @IsOptional()

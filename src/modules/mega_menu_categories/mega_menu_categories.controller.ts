@@ -25,8 +25,8 @@ export class MegaMenuCategoriesController {
   }
 
   @Get("/header")
-  findAlltwo() {
-    return this.megaMenuCategoriesService.findAlltwo();
+  findAllForHeader() {
+    return this.megaMenuCategoriesService.findAllForHeader();
   }
 
   @Get()

@@ -6,10 +6,14 @@ import { PassportModule } from "@nestjs/passport";
 import { UserSchema } from "src/schemas/user.schema";
 import { User } from "./entities/user.entity";
 import { JwtModule } from "@nestjs/jwt/dist";
+import { Product, ProductSchema } from "src/schemas/product.schema";
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: Product.name, schema: ProductSchema },
+    ]),
     PassportModule,
     JwtModule.register({
       secret: `${process.env["JWT_SECRET_KEY"]}`,

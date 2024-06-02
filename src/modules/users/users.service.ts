@@ -1,3 +1,4 @@
+import { UtilSlug } from "./../../utils/UtilSlug";
 import { Injectable } from "@nestjs/common";
 import { RegisterUserDto } from "./dto/register-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -6,11 +7,11 @@ import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { TokenVerifier } from "src/utils/TokenVerifier";
-import { UtilSlug } from "src/utils/UtilSlug";
 import { JwtService } from "@nestjs/jwt";
 import { UpdateUserAddressDto } from "./dto/update-user-address.dto";
 import { SellerApplicationDto } from "./dto/seller-application.dto";
 import { UpdateShopInfoDto } from "./dto/update-shop-info.dto";
+import { Product, ProductDocument } from "src/schemas/product.schema";
 const admin = require("firebase-admin");
 
 // const serviceAccount = require('../../utils/ecommerce-3dcd5-firebase-adminsdk-8iryd-a787e6184a.json');
@@ -37,6 +38,8 @@ admin.initializeApp({
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(Product.name)
+    private readonly productModel: Model<ProductDocument>,
     // @InjectModel(Portfolio.name) private portfolioModel: Model<PortfolioDocument>,
     // @InjectModel(Picture.name) private pictureModel: Model<PictureDocument>,
     private jwtService: JwtService // eslint-disable-next-line no-empty-function
@@ -75,14 +78,15 @@ export class UsersService {
       }
     );
   }
-  
+
   async register(registerUserDto: RegisterUserDto) {
     const result = await this.userModel.create({
-      firstName: registerUserDto.firstName,
-      lastName: registerUserDto.lastName,
+      slug: UtilSlug.getUniqueId(registerUserDto.fullName),
+      fullName: registerUserDto.fullName,
       email: registerUserDto.email,
       // password: registerUserDto.password,
-      userType: registerUserDto.userType,
+      role: registerUserDto.role,
+      tokenType: registerUserDto.tokenType,
       status: "active",
     });
     return result;
@@ -112,16 +116,16 @@ export class UsersService {
     }
   }
 
-  async login(loginUserDto: Partial<LoginUserDto>): Promise<{
-    slug: string | undefined;
-    access_token: string | null;
-    userId?: string | null;
-    role?: string | null;
-    fullName?: string | null;
-    avatar?: string | null;
-    email?: string | null;
-  }> {
-    console.log("loginUserDto", loginUserDto);
+  async login(loginUserDto: Partial<LoginUserDto>): Promise<
+    Partial<User> &
+      Partial<{
+        slug: string;
+        role: string;
+        access_token: string | null;
+        userId?: string;
+      }>
+  > {
+    // console.log("loginUserDto", loginUserDto);
     const { token, tokenType } = loginUserDto;
     let isVerified = false;
     const accessToken = null;
@@ -143,11 +147,120 @@ export class UsersService {
     if (isVerified) {
       const { email, fullName, role } = loginUserDto;
 
+      let user = await this.userModel.findOne({ email: email });
+
+      if (!user) {
+        user = await this.userModel.findOneAndUpdate(
+          { email: email },
+          {
+            $set: {
+              ...loginUserDto,
+              slug: UtilSlug.getUniqueId(),
+            },
+          },
+          { upsert: true, new: true }
+        );
+      }
+
+      if (user?.role === "admin" || user?.role === "seller") {
+        return {
+          slug: loginUserDto["slug"],
+          access_token: null,
+          role: user.role,
+        };
+      }
+
+      if (user?.avatar) {
+        delete loginUserDto.avatar;
+      }
+
+      if (user?.fullName) {
+        delete loginUserDto.fullName;
+      }
+
+      if (user) {
+        loginUserDto["slug"] = user.slug;
+      } else {
+        loginUserDto["slug"] = UtilSlug.getUniqueId(fullName);
+      }
+
+      // console.log(
+      //   "🚀 ~ file: users.service.ts:179 ~ UsersService ~ login ~ createUser:",
+      //   createUser
+      // );
+
+      const accessToken = this.jwtService.sign({
+        _id: user._id as string,
+        email: user.email,
+        role: user.role,
+      });
+
+      return {
+        slug: loginUserDto["slug"],
+        access_token: accessToken,
+        userId: user._id as string,
+        role: user.role as string,
+        email: user.email as string,
+        avatar: user.avatar as string,
+        fullName: user.fullName as string,
+        phone: user.phone || "",
+        address: user.address,
+      };
+    }
+
+    return {
+      slug: loginUserDto["slug"],
+      access_token: accessToken,
+      role: null,
+    };
+  }
+
+  async adminSellerLogin(loginUserDto: Partial<LoginUserDto>): Promise<
+    Partial<User> &
+      Partial<{
+        slug: string;
+        role: string;
+        access_token: string | null;
+        userId?: string;
+      }>
+  > {
+    console.log("loginUserDto", loginUserDto);
+    const { token, tokenType } = loginUserDto;
+    let isVerified = false;
+    const accessToken = null;
+
+    if (tokenType == "facebook") {
+      isVerified = await TokenVerifier.verifyFacebookToken(token);
+    } else if (tokenType == "google") {
+      isVerified = await TokenVerifier.verifyGoogleToken(token);
+      console.log("is verify google", isVerified);
+    } else if (tokenType == "email") {
+      try {
+        const decodedUser = await admin.auth().verifyIdToken(token); // 73-9 token verify hole bhitorer data gulo return korbe
+        if (decodedUser?.uid) {
+          isVerified = true;
+        }
+      } catch {}
+    }
+
+    console.log({ isVerified, token, tokenType });
+
+    if (isVerified) {
+      const { email, fullName, role } = loginUserDto;
+
       console.log(`email: ${email}`);
       console.log(`fullName: ${fullName}`);
       console.log(`role: ${role}`);
 
       const user = await this.userModel.findOne({ email: email });
+
+      if (user?.role === "buyer") {
+        return {
+          slug: loginUserDto["slug"],
+          access_token: null,
+          role: user.role,
+        };
+      }
 
       if (user?.avatar) {
         delete loginUserDto.avatar;
@@ -172,9 +285,15 @@ export class UsersService {
         },
         { upsert: true, new: true }
       );
+      console.log(
+        "🚀 ~ file: users.service.ts:179 ~ UsersService ~ login ~ createUser:",
+        createUser
+      );
+
       const accessToken = this.jwtService.sign({
         _id: createUser._id as string,
         email: createUser.email,
+        role: createUser.role,
       });
 
       return {
@@ -185,6 +304,8 @@ export class UsersService {
         email: createUser.email as string,
         avatar: createUser.avatar as string,
         fullName: createUser.fullName as string,
+        phone: createUser.phone || "",
+        address: createUser.address,
       };
     }
 
@@ -222,6 +343,10 @@ export class UsersService {
     return await this.userModel.findOne({ email: email });
   }
 
+  async findSellerByUser(email: string) {
+    return await this.userModel.findOne({ user_email: email });
+  }
+
   async findSingleUser(slug: string) {
     return await this.userModel.findOne({ slug: slug });
   }
@@ -257,7 +382,30 @@ export class UsersService {
         new: true,
       }
     );
-    console.log(updatedUser);
+    // console.log(updatedUser);
+    return updatedUser;
+  }
+
+  async updateSellerStatus(
+    slug: string,
+    updateUserDto: UpdateUserDto
+  ): Promise<User> {
+    console.log(updateUserDto);
+    const status = updateUserDto.status;
+
+    const updatedUser = await this.userModel.findOneAndUpdate(
+      { slug: slug },
+      updateUserDto,
+      {
+        new: true,
+      }
+    );
+
+    const updateProducts = await this.productModel.updateMany(
+      { seller_slug: slug },
+      updateUserDto
+    );
+    console.log(updatedUser, updateProducts);
     return updatedUser;
   }
 
@@ -298,8 +446,11 @@ export class UsersService {
       opens_at: updateShopInfoDto.shop.opens_at,
       close_at: updateShopInfoDto.shop.close_at,
       geetings_message: updateShopInfoDto.shop.geetings_message,
-      social_icon: updateShopInfoDto.shop.social_icon,
-      social_link: updateShopInfoDto.shop.social_link,
+      // social_icon: updateShopInfoDto.shop.social_icon,
+      // social_link: updateShopInfoDto.shop.social_link,
+
+      social: updateShopInfoDto?.shop?.social,
+
       seo_title: updateShopInfoDto.shop.seo_title,
       seo_des: updateShopInfoDto.shop.seo_des,
     };
@@ -341,8 +492,50 @@ export class UsersService {
 
     return editProfile;
   }
+
+  async findAllAdmins(query: any) {
+    const allAdmins = await this.userModel
+      .find({
+        role: "admin",
+        fullName: new RegExp(query.search, "i"),
+      })
+      .sort({ [query.sortBy]: query.sortType });
+    // console.log(allUsers);
+    return allAdmins;
+  }
+
   //-----------
   async delete(slug: string): Promise<User> {
+    return await this.userModel.findOneAndDelete({ slug });
+  }
+
+  async deleteAdmin(
+    slug: string, //
+    email: string
+  ): Promise<User> {
+    let userData: any;
+    let data: any;
+    await admin
+      .auth()
+      .getUserByEmail(email)
+      .then((userRecord: string) => {
+        // See the UserRecord reference doc for the contents of userRecord.
+        userData = JSON.stringify(userRecord);
+        data = JSON.parse(userData);
+        admin
+          .auth()
+          .deleteUser(data.uid)
+          .then(() => {
+            console.log("Successfully deleted user");
+          })
+          .catch((error) => {
+            console.log("Error deleting user:", error);
+          });
+      })
+      .catch((error: string) => {
+        console.log("Error fetching user data:", error);
+      });
+
     return await this.userModel.findOneAndDelete({ slug });
   }
 }

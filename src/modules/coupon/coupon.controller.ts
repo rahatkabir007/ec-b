@@ -43,6 +43,12 @@ export class CouponController {
     return this.couponService.findOne(slug);
   }
 
+  @Get("/apply/couponCode")
+  findOneCoupon(@Query() query: { code: string }) {
+    console.log(query);
+    return this.couponService.findOneCoupon(query);
+  }
+
   @Patch(":slug")
   update(
     @Param("slug") slug: string,

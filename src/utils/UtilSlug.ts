@@ -1,18 +1,15 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-// import shortid from 'shortid-fix';
-
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const shortid = require("shortid-fix");
-
-// shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_');
+// import { shortid } from 'shortid-fix';
+import { nanoid } from "nanoid";
+// const nanoid = require("nanoid");
 
 export class UtilSlug {
-  static getUniqueId(name: string) {
+  static getUniqueId(name: string = "") {
     const slug = `${name
+      .replace(/[^a-zA-Z0-9 ]/g, "")
       .toLowerCase()
       .split(" ")
       .join("_")
-      .concat("_")}${shortid.generate()}`;
+      .concat("_")}${nanoid()}`;
     return slug;
   }
 }

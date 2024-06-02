@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from "class-validator";
+import { IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateReviewDto {
   @IsString()
@@ -9,6 +9,10 @@ export class CreateReviewDto {
 
   @IsString()
   product_slug: string;
+
+  @IsString()
+  @IsOptional()
+  seller_slug: string;
 
   @IsString()
   name: string;

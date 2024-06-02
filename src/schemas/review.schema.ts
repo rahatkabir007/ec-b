@@ -18,6 +18,9 @@ export class Review {
   product_slug: string;
 
   @Prop()
+  seller_slug: string;
+
+  @Prop()
   name: string;
 
   @Prop()

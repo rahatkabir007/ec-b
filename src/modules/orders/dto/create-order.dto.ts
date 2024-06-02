@@ -38,4 +38,7 @@ export class CreateOrderDto {
 
   @IsNumber()
   subTotal: number;
+
+  @IsNumber()
+  total: number;
 }

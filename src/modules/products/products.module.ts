@@ -4,7 +4,6 @@ import { ProductsService } from "./products.service";
 import { ProductsController } from "./products.controller";
 import { Product, ProductSchema } from "src/schemas/product.schema";
 import { User, UserSchema } from "src/schemas/user.schema";
-import { UploadService } from "../upload/upload.service";
 
 @Module({
   imports: [
@@ -14,6 +13,6 @@ import { UploadService } from "../upload/upload.service";
     ]),
   ],
   controllers: [ProductsController],
-  providers: [ProductsService, UploadService],
+  providers: [ProductsService],
 })
 export class ProductsModule {}
