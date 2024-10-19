@@ -17,7 +17,7 @@ import { Product, ProductSchema } from "src/schemas/product.schema";
     PassportModule,
     JwtModule.register({
       secret: `${process.env["JWT_SECRET_KEY"]}`,
-      signOptions: { expiresIn: "3000000h" },
+      signOptions: { expiresIn: "24h" },
     }),
   ],
   controllers: [UsersController],
