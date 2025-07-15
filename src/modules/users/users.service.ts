@@ -6,12 +6,13 @@ import { User, UserDocument } from "src/schemas/user.schema";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { LoginUserDto } from "./dto/login-user.dto";
-import { TokenVerifier } from "src/utils/TokenVerifier";
+
 import { JwtService } from "@nestjs/jwt";
 import { UpdateUserAddressDto } from "./dto/update-user-address.dto";
 import { SellerApplicationDto } from "./dto/seller-application.dto";
 import { UpdateShopInfoDto } from "./dto/update-shop-info.dto";
 import { Product, ProductDocument } from "src/schemas/product.schema";
+import { TokenVerifier } from "../../utils/TokenVerifier";
 const admin = require("firebase-admin");
 
 // const serviceAccount = require('../../utils/ecommerce-3dcd5-firebase-adminsdk-8iryd-a787e6184a.json');
@@ -118,12 +119,12 @@ export class UsersService {
 
   async login(loginUserDto: Partial<LoginUserDto>): Promise<
     Partial<User> &
-      Partial<{
-        slug: string;
-        role: string;
-        access_token: string | null;
-        userId?: string;
-      }>
+    Partial<{
+      slug: string;
+      role: string;
+      access_token: string | null;
+      userId?: string;
+    }>
   > {
     // console.log("loginUserDto", loginUserDto);
     const { token, tokenType } = loginUserDto;
@@ -141,7 +142,7 @@ export class UsersService {
         if (decodedUser?.uid) {
           isVerified = true;
         }
-      } catch {}
+      } catch { }
     }
 
     if (isVerified) {
@@ -217,12 +218,12 @@ export class UsersService {
 
   async adminSellerLogin(loginUserDto: Partial<LoginUserDto>): Promise<
     Partial<User> &
-      Partial<{
-        slug: string;
-        role: string;
-        access_token: string | null;
-        userId?: string;
-      }>
+    Partial<{
+      slug: string;
+      role: string;
+      access_token: string | null;
+      userId?: string;
+    }>
   > {
     console.log("loginUserDto", loginUserDto);
     const { token, tokenType } = loginUserDto;
@@ -240,7 +241,7 @@ export class UsersService {
         if (decodedUser?.uid) {
           isVerified = true;
         }
-      } catch {}
+      } catch { }
     }
 
     console.log({ isVerified, token, tokenType });
