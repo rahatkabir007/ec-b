@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Slider, SliderDocument } from "src/schemas/slider.schema";
+import { Slider, SliderDocument } from "../../schemas/slider.schema";
 import { UtilSlug } from "src/utils/UtilSlug";
 import { CreateSliderDto } from "./dto/create-slider.dto";
 import { UpdateSliderDto } from "./dto/update-slider.dto";
@@ -11,7 +11,7 @@ export class SliderService {
   constructor(
     @InjectModel(Slider.name)
     private readonly sliderModel: Model<SliderDocument>
-  ) {}
+  ) { }
   // create(createSliderDto: CreateSliderDto) {
   //   return "This action adds a new slider";
   // }

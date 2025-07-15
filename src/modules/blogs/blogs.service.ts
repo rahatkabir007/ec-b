@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Blog, BlogDocument } from "src/schemas/blog.schema";
+import { Blog, BlogDocument } from "../../schemas/blog.schema";
 import { UtilSlug } from "src/utils/UtilSlug";
 import { CreateBlogDto } from "./dto/create-blog.dto";
 import { UpdateBlogDto } from "./dto/update-blog.dto";
@@ -11,7 +11,7 @@ export class BlogsService {
   constructor(
     @InjectModel(Blog.name)
     private readonly blogModel: Model<BlogDocument>
-  ) {}
+  ) { }
 
   async create(createBlogDto: CreateBlogDto): Promise<Object> {
     createBlogDto["slug"] = UtilSlug.getUniqueId(createBlogDto.title);

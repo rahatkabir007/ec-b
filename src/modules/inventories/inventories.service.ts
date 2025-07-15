@@ -3,9 +3,9 @@ import { Injectable } from "@nestjs/common";
 import { CreateInventoryDto } from "./dto/create-inventory.dto";
 import { UpdateInventoryDto } from "./dto/update-inventory.dto";
 import { InjectModel } from "@nestjs/mongoose";
-import { Inventory, InventoryDocument } from "src/schemas/inventory.schema";
+import { Inventory, InventoryDocument } from "../../schemas/inventory.schema";
 import { Model } from "mongoose";
-import { Product, ProductDocument } from "src/schemas/product.schema";
+import { Product, ProductDocument } from "../../schemas/product.schema";
 import { SearchSortDto } from "src/utils/all-queries.dto";
 
 @Injectable()
@@ -15,7 +15,7 @@ export class InventoriesService {
     private readonly inventoryModel: Model<InventoryDocument>,
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>
-  ) {}
+  ) { }
   async create(createInventoryDto: CreateInventoryDto) {
     createInventoryDto["slug"] = UtilSlug.getUniqueId("stock");
 

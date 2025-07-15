@@ -5,7 +5,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import {
   Advertisement,
   AdvertisementSchema,
-} from "src/schemas/advertisement.schema";
+} from "../../schemas/advertisement.schema";
 
 @Module({
   imports: [
@@ -16,4 +16,4 @@ import {
   controllers: [AdvertisementsController],
   providers: [AdvertisementsService],
 })
-export class AdvertisementsModule {}
+export class AdvertisementsModule { }

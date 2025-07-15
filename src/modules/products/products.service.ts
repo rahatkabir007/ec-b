@@ -4,11 +4,11 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Injectable } from "@nestjs/common";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
-import { Product, ProductDocument } from "src/schemas/product.schema";
+import { Product, ProductDocument } from "../../schemas/product.schema";
 import { Model } from "mongoose";
 import { UtilSlug } from "./../../utils/UtilSlug";
 import { SearchSortDto } from "src/utils/all-queries.dto";
-import { User, UserDocument } from "src/schemas/user.schema";
+import { User, UserDocument } from "../../schemas/user.schema";
 
 @Injectable()
 export class ProductsService {
@@ -17,7 +17,7 @@ export class ProductsService {
     private readonly productModel: Model<ProductDocument>,
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>
-  ) {}
+  ) { }
 
   async create(createProductDto: CreateProductDto): Promise<Object> {
     createProductDto["slug"] = UtilSlug.getUniqueId(
@@ -59,44 +59,44 @@ export class ProductsService {
     const categoryFilter = Object.assign(
       query.categories
         ? {
-            $or: categoriesStrArr.map((cat) => {
-              return {
-                catSlug: {
-                  $regex: "(?i)" + cat + "(?-i)",
-                },
-              };
-            }),
-          }
+          $or: categoriesStrArr.map((cat) => {
+            return {
+              catSlug: {
+                $regex: "(?i)" + cat + "(?-i)",
+              },
+            };
+          }),
+        }
         : {}
     );
 
     const brandFilter = Object.assign(
       query.brands
         ? {
-            $or: brandsStrArr.map((brand) => {
-              return {
-                brandSlug: {
-                  $regex: "(?i)" + brand + "(?-i)",
-                },
-              };
-            }),
-          }
+          $or: brandsStrArr.map((brand) => {
+            return {
+              brandSlug: {
+                $regex: "(?i)" + brand + "(?-i)",
+              },
+            };
+          }),
+        }
         : {}
     );
 
     const highlightFilter = Object.assign(
       query.highlight
         ? {
-            [query.highlight]: true,
-          }
+          [query.highlight]: true,
+        }
         : {}
     );
 
     const subCategoryFilter = Object.assign(
       query.sub_category
         ? {
-            subCatSlug: query.sub_category,
-          }
+          subCatSlug: query.sub_category,
+        }
         : {}
     );
 
@@ -220,44 +220,44 @@ export class ProductsService {
     const categoryFilter = Object.assign(
       query.categories
         ? {
-            $or: categoriesStrArr.map((cat) => {
-              return {
-                catSlug: {
-                  $regex: "(?i)" + cat + "(?-i)",
-                },
-              };
-            }),
-          }
+          $or: categoriesStrArr.map((cat) => {
+            return {
+              catSlug: {
+                $regex: "(?i)" + cat + "(?-i)",
+              },
+            };
+          }),
+        }
         : {}
     );
 
     const brandFilter = Object.assign(
       query.brands
         ? {
-            $or: brandsStrArr.map((brand) => {
-              return {
-                brandSlug: {
-                  $regex: "(?i)" + brand + "(?-i)",
-                },
-              };
-            }),
-          }
+          $or: brandsStrArr.map((brand) => {
+            return {
+              brandSlug: {
+                $regex: "(?i)" + brand + "(?-i)",
+              },
+            };
+          }),
+        }
         : {}
     );
 
     const highlightFilter = Object.assign(
       query.highlight
         ? {
-            [query.highlight]: true,
-          }
+          [query.highlight]: true,
+        }
         : {}
     );
 
     const subCategoryFilter = Object.assign(
       query.sub_category
         ? {
-            subCatSlug: query.sub_category,
-          }
+          subCatSlug: query.sub_category,
+        }
         : {}
     );
 

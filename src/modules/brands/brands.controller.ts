@@ -8,7 +8,7 @@ import {
   Delete,
   Query,
 } from "@nestjs/common";
-import { Brand } from "src/schemas/brand.schema";
+import { Brand } from "../../schemas/brand.schema";
 import { BrandsService } from "./brands.service";
 import { CreateBrandDto } from "./dto/create-brand.dto";
 import { UpdateBrandDto } from "./dto/update-brand.dto";
@@ -17,7 +17,7 @@ import { SearchSortDto } from "./../../utils/all-queries.dto";
 
 @Controller("brands")
 export class BrandsController {
-  constructor(private readonly brandsService: BrandsService) {}
+  constructor(private readonly brandsService: BrandsService) { }
 
   @Post()
   create(@Body() createBrandDto: CreateBrandDto) {

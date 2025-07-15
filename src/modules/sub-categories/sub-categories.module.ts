@@ -5,7 +5,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import {
   SubCategories,
   SubCategoriesSchema,
-} from "src/schemas/sub-category.schema";
+} from "../../schemas/sub-category.schema";
 
 @Module({
   imports: [
@@ -16,4 +16,4 @@ import {
   controllers: [SubCategoriesController],
   providers: [SubCategoriesService],
 })
-export class SubCategoriesModule {}
+export class SubCategoriesModule { }

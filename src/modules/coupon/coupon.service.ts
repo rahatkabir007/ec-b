@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Coupon, CouponDocument } from "src/schemas/coupon.schema";
+import { Coupon, CouponDocument } from "../../schemas/coupon.schema";
 import { UtilSlug } from "src/utils/UtilSlug";
 import { CreateCouponDto } from "./dto/create-coupon.dto";
 import { UpdateCouponDto } from "./dto/update-coupon.dto";
@@ -11,7 +11,7 @@ export class CouponService {
   constructor(
     @InjectModel(Coupon.name)
     private readonly couponModel: Model<CouponDocument>
-  ) {}
+  ) { }
   // create(createCouponDto: CreateCouponDto) {
   //   return "This action adds a new coupon";
   // }

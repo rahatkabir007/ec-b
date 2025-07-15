@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { SliderService } from "./slider.service";
 import { SliderController } from "./slider.controller";
 import { MongooseModule } from "@nestjs/mongoose";
-import { Slider, SliderSchema } from "src/schemas/slider.schema";
+import { Slider, SliderSchema } from "../../schemas/slider.schema";
 
 @Module({
   imports: [
@@ -11,4 +11,4 @@ import { Slider, SliderSchema } from "src/schemas/slider.schema";
   controllers: [SliderController],
   providers: [SliderService],
 })
-export class SliderModule {}
+export class SliderModule { }

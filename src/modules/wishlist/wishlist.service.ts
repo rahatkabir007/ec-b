@@ -2,7 +2,7 @@ import { Product } from "./../../schemas/product.schema";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { WishlistDocument, Wishlist } from "src/schemas/wishlist.schema";
+import { WishlistDocument, Wishlist } from "../../schemas/wishlist.schema";
 import { CreateWishlistDto } from "./dto/create-wishlist.dto";
 import { UpdateWishlistDto } from "./dto/update-wishlist.dto";
 import { UtilSlug } from "src/utils/UtilSlug";
@@ -12,7 +12,7 @@ export class WishlistService {
   constructor(
     @InjectModel(Wishlist.name)
     private readonly wishlistModel: Model<WishlistDocument>
-  ) {}
+  ) { }
   //create wishlist product
   async create(createWishlistDto: CreateWishlistDto): Promise<Object> {
     const slug = createWishlistDto.user_slug + " " + createWishlistDto.slug;

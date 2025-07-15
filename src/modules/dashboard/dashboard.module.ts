@@ -2,22 +2,22 @@ import { Module } from "@nestjs/common";
 import { DashboardService } from "./dashboard.service";
 import { DashboardController } from "./dashboard.controller";
 import { MongooseModule } from "@nestjs/mongoose";
-import { User, UserSchema } from "src/schemas/user.schema";
-import { Coupon, CouponSchema } from "src/schemas/coupon.schema";
-import { Product, ProductSchema } from "src/schemas/product.schema";
-import { Order, OrderSchema } from "src/schemas/order.schema";
+import { User, UserSchema } from "../../schemas/user.schema";
+import { Coupon, CouponSchema } from "../../schemas/coupon.schema";
+import { Product, ProductSchema } from "../../schemas/product.schema";
+import { Order, OrderSchema } from "../../schemas/order.schema";
 import {
   PopularCategory,
   PopularCategorySchema,
-} from "src/schemas/popular-category.schema";
-import { Wishlist, WishlistSchema } from "src/schemas/wishlist.schema";
-import { Category, CategorySchema } from "src/schemas/category.schema";
-import { Review, ReviewSchema } from "src/schemas/review.schema";
-import { Brand, BrandSchema } from "src/schemas/brand.schema";
+} from "../../schemas/popular-category.schema";
+import { Wishlist, WishlistSchema } from "../../schemas/wishlist.schema";
+import { Category, CategorySchema } from "../../schemas/category.schema";
+import { Review, ReviewSchema } from "../../schemas/review.schema";
+import { Brand, BrandSchema } from "../../schemas/brand.schema";
 import {
   ReportedItem,
   ReportedItemSchema,
-} from "src/schemas/reported-item.schema";
+} from "../../schemas/reported-item.schema";
 
 @Module({
   imports: [
@@ -37,4 +37,4 @@ import {
   controllers: [DashboardController],
   providers: [DashboardService],
 })
-export class DashboardModule {}
+export class DashboardModule { }

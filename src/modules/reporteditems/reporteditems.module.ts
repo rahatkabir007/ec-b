@@ -5,7 +5,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import {
   ReportedItem,
   ReportedItemSchema,
-} from "src/schemas/reported-item.schema";
+} from "../../schemas/reported-item.schema";
 
 @Module({
   imports: [
@@ -16,4 +16,4 @@ import {
   controllers: [ReporteditemsController],
   providers: [ReporteditemsService],
 })
-export class ReporteditemsModule {}
+export class ReporteditemsModule { }

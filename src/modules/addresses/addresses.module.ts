@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { AddressesService } from "./addresses.service";
 import { AddressesController } from "./addresses.controller";
 import { MongooseModule } from "@nestjs/mongoose";
-import { Address, AddressSchema } from "src/schemas/address.schema";
+import { Address, AddressSchema } from "../../schemas/address.schema";
 
 @Module({
   imports: [
@@ -11,4 +11,4 @@ import { Address, AddressSchema } from "src/schemas/address.schema";
   controllers: [AddressesController],
   providers: [AddressesService],
 })
-export class AddressesModule {}
+export class AddressesModule { }

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { WithdrawsService } from './withdraws.service';
 import { WithdrawsController } from './withdraws.controller';
-import { Withdraw, WithdrawSchema } from 'src/schemas/withdraw.schema';
+import { Withdraw, WithdrawSchema } from '../../schemas/withdraw.schema';
 
 @Module({
   imports: [
@@ -11,4 +11,4 @@ import { Withdraw, WithdrawSchema } from 'src/schemas/withdraw.schema';
   controllers: [WithdrawsController],
   providers: [WithdrawsService]
 })
-export class WithdrawsModule {}
+export class WithdrawsModule { }

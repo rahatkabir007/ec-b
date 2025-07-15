@@ -5,7 +5,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import {
   PopularCategory,
   PopularCategorySchema,
-} from "src/schemas/popular-category.schema";
+} from "../../schemas/popular-category.schema";
 
 @Module({
   imports: [
@@ -16,4 +16,4 @@ import {
   controllers: [PopularCategoriesController],
   providers: [PopularCategoriesService],
 })
-export class PopularCategoriesModule {}
+export class PopularCategoriesModule { }

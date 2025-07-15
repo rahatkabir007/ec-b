@@ -4,7 +4,7 @@ import { Model } from "mongoose";
 import {
   PopularCategory,
   PopularCategoryDocument,
-} from "src/schemas/popular-category.schema";
+} from "../../schemas/popular-category.schema";
 import { CreatePopularCategoryDto } from "./dto/create-popular_category.dto";
 import { UpdatePopularCategoryDto } from "./dto/update-popular_category.dto";
 import { UtilSlug } from "./../../utils/UtilSlug";
@@ -14,7 +14,7 @@ export class PopularCategoriesService {
   constructor(
     @InjectModel(PopularCategory.name)
     private readonly popularCategoryModel: Model<PopularCategoryDocument>
-  ) {}
+  ) { }
   // create(createPopularCategoryDto: CreatePopularCategoryDto) {
   //   return 'This action adds a new popularCategory';
   // }

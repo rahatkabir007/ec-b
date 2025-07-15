@@ -4,7 +4,7 @@ import { Model } from "mongoose";
 import {
   SubCategories,
   SubCategoriesDocument,
-} from "src/schemas/sub-category.schema";
+} from "../../schemas/sub-category.schema";
 import { CreateSubCategoryDto } from "./dto/create-sub-category.dto";
 import { UpdateSubCategoryDto } from "./dto/update-sub-category.dto";
 import { UtilSlug } from "src/utils/UtilSlug";
@@ -14,7 +14,7 @@ export class SubCategoriesService {
   constructor(
     @InjectModel(SubCategories.name)
     private readonly subCategoryModel: Model<SubCategoriesDocument>
-  ) {}
+  ) { }
 
   // create(createSubCategoryDto: CreateSubCategoryDto) {
   //   return "This action adds a new subCategory";

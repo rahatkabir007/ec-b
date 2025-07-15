@@ -4,11 +4,11 @@ import { Model } from "mongoose";
 import {
   BlogCategory,
   BlogCategoryDocument,
-} from "src/schemas/blog-category.schema";
+} from "../../schemas/blog-category.schema";
 import { UtilSlug } from "src/utils/UtilSlug";
 import { CreateBlogCategoryDto } from "./dto/create-blog-category.dto";
 import { UpdateBlogCategoryDto } from "./dto/update-blog-category.dto";
-import { Blog, BlogDocument } from "src/schemas/blog.schema";
+import { Blog, BlogDocument } from "../../schemas/blog.schema";
 
 @Injectable()
 export class BlogCategoryService {
@@ -17,7 +17,7 @@ export class BlogCategoryService {
     private readonly blogCategoryModel: Model<BlogCategoryDocument>,
     @InjectModel(Blog.name)
     private readonly blogModel: Model<BlogDocument>
-  ) {}
+  ) { }
 
   async create(createBlogCategoryDto: CreateBlogCategoryDto) {
     createBlogCategoryDto["slug"] = UtilSlug.getUniqueId(

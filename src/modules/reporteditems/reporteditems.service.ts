@@ -5,7 +5,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import {
   ReportedItem,
   ReportedItemDocument,
-} from "src/schemas/reported-item.schema";
+} from "../../schemas/reported-item.schema";
 import { Model } from "mongoose";
 import { UtilSlug } from "src/utils/UtilSlug";
 
@@ -14,7 +14,7 @@ export class ReporteditemsService {
   constructor(
     @InjectModel(ReportedItem.name)
     private readonly reportedItemModel: Model<ReportedItemDocument>
-  ) {}
+  ) { }
 
   async create(createReporteditemDto: CreateReporteditemDto): Promise<Object> {
     const slug = `report_${createReporteditemDto.user_slug}_${createReporteditemDto.product_slug}`;

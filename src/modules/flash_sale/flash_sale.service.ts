@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { CreateFlashSaleDto } from "./dto/create-flash_sale.dto";
 import { UpdateFlashSaleDto } from "./dto/update-flash_sale.dto";
 import { InjectModel } from "@nestjs/mongoose";
-import { FlashSale, FlashSaleDocument } from "src/schemas/flash_sale.schema";
+import { FlashSale, FlashSaleDocument } from "../../schemas/flash_sale.schema";
 import { Model } from "mongoose";
 import { UtilSlug } from "src/utils/UtilSlug";
 import { SearchSortDto } from "src/utils/all-queries.dto";
@@ -12,7 +12,7 @@ export class FlashSaleService {
   constructor(
     @InjectModel(FlashSale.name)
     private readonly flashSaleModel: Model<FlashSaleDocument>
-  ) {}
+  ) { }
   create(createFlashSaleDto: CreateFlashSaleDto) {
     return this.flashSaleModel.create({
       slug: UtilSlug.getUniqueId(createFlashSaleDto.product_slug),

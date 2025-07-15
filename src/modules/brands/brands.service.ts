@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { CreateBrandDto } from "./dto/create-brand.dto";
 import { UpdateBrandDto } from "./dto/update-brand.dto";
 import { InjectModel } from "@nestjs/mongoose";
-import { Brand, BrandDocument } from "src/schemas/brand.schema";
+import { Brand, BrandDocument } from "../../schemas/brand.schema";
 import { Model, SortOrder } from "mongoose";
 import { NewBrand } from "./entities/brand.entity";
 import { ServiceHandler } from "src/utils/ServiceHandler";
@@ -14,7 +14,7 @@ import { UtilSlug } from "src/utils/UtilSlug";
 export class BrandsService {
   constructor(
     @InjectModel(Brand.name) private brandModel: Model<BrandDocument>
-  ) {}
+  ) { }
 
   async create(createBrandDto: CreateBrandDto) {
     createBrandDto["slug"] = UtilSlug.getUniqueId(createBrandDto.name);

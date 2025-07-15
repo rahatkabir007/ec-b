@@ -5,7 +5,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import {
   Advertisement,
   AdvertisementDocument,
-} from "src/schemas/advertisement.schema";
+} from "../../schemas/advertisement.schema";
 import { Model } from "mongoose";
 import { UtilSlug } from "src/utils/UtilSlug";
 
@@ -14,7 +14,7 @@ export class AdvertisementsService {
   constructor(
     @InjectModel(Advertisement.name)
     private advertisementModel: Model<AdvertisementDocument>
-  ) {}
+  ) { }
 
   async create(
     createAdvertisementDto: CreateAdvertisementDto

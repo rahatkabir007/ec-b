@@ -1,16 +1,16 @@
 import { UtilSlug } from "./../../utils/UtilSlug";
 import { OrderDocument } from "./../../schemas/order.schema";
 import { Injectable } from "@nestjs/common";
-import { Order } from "src/schemas/order.schema";
+import { Order } from "../../schemas/order.schema";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { UpdateOrderDto } from "./dto/update-order.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Inventory, InventoryDocument } from "src/schemas/inventory.schema";
-import { Product, ProductDocument } from "src/schemas/product.schema";
+import { Inventory, InventoryDocument } from "../../schemas/inventory.schema";
+import { Product, ProductDocument } from "../../schemas/product.schema";
 const SSLCommerzPayment = require("sslcommerz-lts");
-import { Cart, CartDocument } from "src/schemas/cart.schema";
-import { Coupon, CouponDocument } from "src/schemas/coupon.schema";
+import { Cart, CartDocument } from "../../schemas/cart.schema";
+import { Coupon, CouponDocument } from "../../schemas/coupon.schema";
 
 @Injectable()
 export class OrdersService {
@@ -25,7 +25,7 @@ export class OrdersService {
     private readonly cartModel: Model<CartDocument>,
     @InjectModel(Coupon.name)
     private readonly couponModel: Model<CouponDocument>
-  ) {}
+  ) { }
 
   // ------------------post order--------------------- //
   async createSSL(createOrderDto: CreateOrderDto) {

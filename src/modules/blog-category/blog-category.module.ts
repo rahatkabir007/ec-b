@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
 import { BlogCategoryService } from "./blog-category.service";
 import { BlogCategoryController } from "./blog-category.controller";
-import { BlogCategory } from "src/schemas/blog-category.schema";
-import { BlogCategorySchema } from "src/schemas/blog-category.schema";
+import { BlogCategory } from "../../schemas/blog-category.schema";
+import { BlogCategorySchema } from "../../schemas/blog-category.schema";
 import { MongooseModule } from "@nestjs/mongoose";
-import { Blog, BlogSchema } from "src/schemas/blog.schema";
+import { Blog, BlogSchema } from "../../schemas/blog.schema";
 
 @Module({
   imports: [
@@ -16,4 +16,4 @@ import { Blog, BlogSchema } from "src/schemas/blog.schema";
   controllers: [BlogCategoryController],
   providers: [BlogCategoryService],
 })
-export class BlogCategoryModule {}
+export class BlogCategoryModule { }

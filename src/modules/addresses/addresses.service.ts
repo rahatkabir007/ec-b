@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { AddressDocument } from "src/schemas/address.schema";
+import { AddressDocument } from "../../schemas/address.schema";
 import { UtilSlug } from "src/utils/UtilSlug";
 import { CreateAddressDto } from "./dto/create-address.dto";
 import { UpdateAddressDto } from "./dto/update-address.dto";
@@ -12,7 +12,7 @@ export class AddressesService {
   constructor(
     @InjectModel(Address.name)
     private readonly addressModel: Model<AddressDocument>
-  ) {}
+  ) { }
 
   async create(createAddressDto: CreateAddressDto): Promise<object> {
     const slug = `address ` + createAddressDto.user_slug;

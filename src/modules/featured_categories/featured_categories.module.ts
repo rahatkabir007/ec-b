@@ -5,7 +5,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import {
   FeaturedCategory,
   FeaturedCategorySchema,
-} from "src/schemas/featured-category.schema";
+} from "../../schemas/featured-category.schema";
 
 @Module({
   imports: [
@@ -16,4 +16,4 @@ import {
   controllers: [FeaturedCategoriesController],
   providers: [FeaturedCategoriesService],
 })
-export class FeaturedCategoriesModule {}
+export class FeaturedCategoriesModule { }

@@ -4,7 +4,7 @@ import { UpdateFeaturedCategoryDto } from "./dto/update-featured_category.dto";
 import {
   FeaturedCategory,
   FeaturedCategoryDocument,
-} from "src/schemas/featured-category.schema";
+} from "../../schemas/featured-category.schema";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { UtilSlug } from "src/utils/UtilSlug";
@@ -14,7 +14,7 @@ export class FeaturedCategoriesService {
   constructor(
     @InjectModel(FeaturedCategory.name)
     private readonly featuredCategoryModel: Model<FeaturedCategoryDocument>
-  ) {}
+  ) { }
 
   async create(
     createFeaturedCategoryDto: CreateFeaturedCategoryDto

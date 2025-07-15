@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { SellerService } from "./seller.service";
 import { SellerController } from "./seller.controller";
 import { MongooseModule } from "@nestjs/mongoose";
-import { Seller, SellerSchema } from "src/schemas/seller.schema";
+import { Seller, SellerSchema } from "../../schemas/seller.schema";
 
 @Module({
   imports: [
@@ -11,4 +11,4 @@ import { Seller, SellerSchema } from "src/schemas/seller.schema";
   controllers: [SellerController],
   providers: [SellerService],
 })
-export class SellerModule {}
+export class SellerModule { }

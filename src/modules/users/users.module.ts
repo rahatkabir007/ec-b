@@ -3,10 +3,10 @@ import { UsersService } from "./users.service";
 import { UsersController } from "./users.controller";
 import { MongooseModule } from "@nestjs/mongoose";
 import { PassportModule } from "@nestjs/passport";
-import { UserSchema } from "src/schemas/user.schema";
+import { UserSchema } from "../../schemas/user.schema";
 import { User } from "./entities/user.entity";
 import { JwtModule } from "@nestjs/jwt/dist";
-import { Product, ProductSchema } from "src/schemas/product.schema";
+import { Product, ProductSchema } from "../../schemas/product.schema";
 
 @Module({
   imports: [
@@ -23,4 +23,4 @@ import { Product, ProductSchema } from "src/schemas/product.schema";
   controllers: [UsersController],
   providers: [UsersService],
 })
-export class UsersModule {}
+export class UsersModule { }

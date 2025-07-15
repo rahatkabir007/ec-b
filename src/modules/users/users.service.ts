@@ -2,7 +2,7 @@ import { UtilSlug } from "./../../utils/UtilSlug";
 import { Injectable } from "@nestjs/common";
 import { RegisterUserDto } from "./dto/register-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { User, UserDocument } from "src/schemas/user.schema";
+import { User, UserDocument } from "../../schemas/user.schema";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { LoginUserDto } from "./dto/login-user.dto";
@@ -11,7 +11,7 @@ import { JwtService } from "@nestjs/jwt";
 import { UpdateUserAddressDto } from "./dto/update-user-address.dto";
 import { SellerApplicationDto } from "./dto/seller-application.dto";
 import { UpdateShopInfoDto } from "./dto/update-shop-info.dto";
-import { Product, ProductDocument } from "src/schemas/product.schema";
+import { Product, ProductDocument } from "../../schemas/product.schema";
 import { TokenVerifier } from "../../utils/TokenVerifier";
 const admin = require("firebase-admin");
 

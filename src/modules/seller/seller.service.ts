@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Seller, SellerDocument } from "src/schemas/seller.schema";
+import { Seller, SellerDocument } from "../../schemas/seller.schema";
 import { UtilSlug } from "src/utils/UtilSlug";
 import { CreateSellerDto } from "./dto/create-seller.dto";
 import { UpdateSellerDto } from "./dto/update-seller.dto";
@@ -11,7 +11,7 @@ export class SellerService {
   constructor(
     @InjectModel(Seller.name)
     private readonly sellerModel: Model<SellerDocument>
-  ) {}
+  ) { }
 
   async create(createSellerDto: CreateSellerDto): Promise<Object> {
     createSellerDto["slug"] = UtilSlug.getUniqueId(createSellerDto.email);
