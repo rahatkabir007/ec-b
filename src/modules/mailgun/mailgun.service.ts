@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
-//@ts-ignore
-import * as mailgun from "mailgun-js";
+const mailgun = require("mailgun-js");
 
 @Injectable()
 export class MailgunService {
@@ -18,3 +17,4 @@ export class MailgunService {
     return this.mg.messages().send(data);
   }
 }
+
